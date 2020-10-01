@@ -16,7 +16,7 @@
 
 # Checklist de estado de actividad
 
-## Trabajo Practico Entregas :clipboard:
+## Historial de actividades :clipboard:
 - [x] Backlog
 - [ ] Diagramas base de datos
 
