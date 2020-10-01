@@ -1,9 +1,9 @@
 ## GRUPO 3 - SUBGRUPO D
 
 
-## Integrantes :busts_in_silhouette:
+## Miembros del equipo :busts_in_silhouette:
 
-| Miembros del equipo  |
+| Apellido y Nombres  |
 | :------: | 
 | Bianco, Tomás Antonio |
 | Diaz, Tomás Miguel |
