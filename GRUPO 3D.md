@@ -18,6 +18,6 @@
 
 ## Historial de actividades :clipboard:
 - [x] Backlog
-- [ ] Diagramas base de datos
+- [x] Diagramas base de datos
 
 
