@@ -1,1 +1,5 @@
+gh-pages
 https://mwlk.github.io/clip-cotizador/
+
+repo:
+https://github.com/mwlk/clip-cotizador.git
