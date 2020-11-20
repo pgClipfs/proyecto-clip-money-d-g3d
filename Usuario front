@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css\clip2.css" />
+    <script src="js\clip.js"></script>
+    <title></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="utf-8">
+</head>
+
+<body>
+
+    <form class="text-center border border-light p-5" name="formulario" method="post" action="/send.php">
+
+        <div>
+            <h1>¡Bienvenido a tu billetera virtual!</h1>
+            <form class="form-control mb-4">
+                <label>Usuario</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Ingresa tu usuario" minlength="6"
+                    maxlength='12' required>
+
+                <label>Contraseña</label>
+                <input type="password" id="contra" name="Contraseña" minlength="8" maxlength='14'
+                    placeholder="Ingresa tu Contraseña" required>
+                <button type='submit'>Ingresa</button>
+                <button><a id='reg' href="/Registro.html" target="_blank">Registrarse</a></button>
+
+
+
+            </form>
+
+
+
+
+        </div>
+
+
+
+    </form>
+
+
+</body>
+
+
+
+</html>
