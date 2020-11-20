@@ -1,0 +1,46 @@
+div {
+    border: 10px solid lightblue;
+    background: lightblue;
+    height: 500px;
+    width: 500px;
+    padding: 10px;
+    margin: 10px
+}
+
+h1,
+input,
+label {
+    color: black;
+    position: relative;
+    display: flex;
+    text-align: center;
+
+}
+
+h1,
+label {
+    background-color: lightblue;
+}
+
+
+input {
+    left: 30%;
+}
+
+button {
+    position: relative;
+    left: 30%;
+    top: 10%;
+    display: inline;
+    border: none;
+    background-color: lightblue;
+    color: darkcyan;
+}
+
+#reg {
+    color: darkcyan;
+}
+
+* {
+    background-color: whitesmoke;
+}
