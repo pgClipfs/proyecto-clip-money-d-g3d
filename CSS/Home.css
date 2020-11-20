@@ -1,0 +1,11 @@
+body{
+    background-color: lightblue;
+}
+
+.navbar{
+    border: solid 2px black;
+}
+
+#saldo-display{
+    margin-top: 5%;
+}
