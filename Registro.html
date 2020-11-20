@@ -3,7 +3,7 @@
 <head>
     <title>Registro</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="CSS\Registro.css" />
+    <link rel="stylesheet" href="css\Registro.css" />
 
 
 </head>
@@ -33,17 +33,17 @@
                 <label>E-mail</label>
                 <input type="email" id="email" name="email" placeholder="Ingresa tu E-mail" required>
                 <label>D.N.I</label>
-                <input type="number" id="dni" name="dni" minlength="6" maxlength='9' placeholder="Ingresa tu  D.N.I"
-                    required>
+                <input type="number" id="dni" name="dni" minlength="6" maxlength='9' placeholder="Ingresa tu  D.N.I"  required>
                 <label>Usuario</label>
                 <input type="text" id="usario" name="usuario" minlength="6" maxlength='12'
                     placeholder="Ingresa tu usuario" required>
                 <label>Contraseña</label>
-                <input type="text" id="Contra" minlength="8" maxlength='14' name="contra"
+                <input type="text" pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])\S{8,16}$" id="Contra" title='La contraseña debe contener una mayuscula, un simbolo especial y debe tener como minimo 8 caracteres'
+                name="contra"
                     placeholder="Ingresa tu Contraseña" required>
 
                 <button type='submit' id='reg'>Registrarse</button>
-                <button><a id='reg' href="Clip2.html">Volver</a></button>
+                <button><a id='reg' href="/Clip2.html">Volver</a></button>
 
 
 
