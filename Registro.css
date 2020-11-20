@@ -1,0 +1,56 @@
+input,
+label {
+
+    color: black;
+    position: relative;
+    display: block;
+    text-align: center;
+
+
+}
+
+h1,
+h2,
+p {
+    text-align: center;
+    position: relative;
+    right: 1%;
+    color: black;
+}
+
+input {
+    left: 25%;
+}
+
+label {
+    right: 5%;
+}
+
+h2 {
+    font-size: 90%;
+    position: relative;
+    right: 30%;
+}
+
+
+button {
+    position: relative;
+    display: block;
+    left: 10%;
+    top: 10%;
+    border: none;
+    background-color: lightblue;
+}
+
+#conte {
+    border: 10px solid lightblue;
+    background: lightblue;
+    height: 700px;
+    width: 500px;
+    padding: 10px;
+    margin: 60px
+}
+
+#reg {
+    color: darkcyan;
+}
