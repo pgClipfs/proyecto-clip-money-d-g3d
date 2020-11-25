@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:100,300,500">
+  <title>Login</title>
+</head>
+<body>
+<<<<<<< HEAD
+  <div class="full-screen-container">
+    <div class="login-container">
+      <h3 class="login-title">Bienvenido a Billetera Clip!</h3>
+      
+        <div class="input-group">
+=======
+  <div class="container text-center" id="title">
+    <h1>Bienvenido</h1><br />
+  </div>
+
+  <div class="container text-center" style="border: none" id="box">
+    <div class="nomUsuario">
+      <label>Nombre</label><br />
+<<<<<<< HEAD
+      <input [(ngModel)]="nombreUsuario" /><br />
+    </div>
+    <div class="passUsuario">
+      <label>Contraseña</label><br />
+      <input type="password" [(ngModel)]="password" /><br />
+=======
+      <input [(ngModel)]="nombreUsuario"/><br />
+    </div>
+    <div class="passUsuario">
+      <label>Contraseña</label><br />
+      <input type="password" [(ngModel)]="password"/><br />
+>>>>>>> c90b3cfec7f118cef8ca70ceb95b4688c71f8eb4
+    </div>
+    <div class="d-flex justify-content-around">
+>>>>>>> main
+
+          <label>Nombre de Usuario</label>
+          <input [(ngModel)]="nombreUsuario" /><br />
+        </div>
+        <div class="input-group">
+
+          <label>Contraseña</label>
+          <input type="password" [(ngModel)]="password">
+        </div>
+        <button class="btn btn-success btn-lg " (click)="login()">Iniciar Sesión</button><br>
+        <a [routerLink]="['/signup']">Registrar Usuario</a>
+      
+    </div>
+  </div>
+
+
+
+</body>
+</html>
