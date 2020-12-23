@@ -1,48 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
+import { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-=======
-<<<<<<< HEAD
-import { Router } from '@angular/router';
-=======
->>>>>>> c90b3cfec7f118cef8ca70ceb95b4688c71f8eb4
->>>>>>> main
-import { AuthService } from '../service/auth.service';
+import { AuthService } from '../services/auth.service';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login-component',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
 
-  public nombreUsuario: string;
-  public password: string;
-<<<<<<< HEAD
- 
-  exito: number; 
+  public loginForm = this.builder.group({
+    email: ['', Validators.compose(
+      [Validators.required, Validators.email])],
+    password: ['', Validators.compose(
+      [Validators.required, Validators.minLength(3)])]
+  });
 
-  constructor(public auth: AuthService, private router: Router) {
-   
-    if (this.auth.usuarioData) {
-      this.router.navigate(['home']);
+  /*public loginForm = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl('')
+  });
+  **/
+  constructor(public authService: AuthService, private router: Router,
+    private builder: FormBuilder) {
+    if (this.authService.usuarioData) {
+      this.router.navigate(['/home'])
     }
-=======
-<<<<<<< HEAD
- 
-  exito: number; 
-
-  constructor(public auth: AuthService, private router: Router) {
-   
-    if (this.auth.usuarioData) {
-      this.router.navigate(['home']);
-    }
-=======
-
-  constructor(public auth: AuthService) {
-
->>>>>>> c90b3cfec7f118cef8ca70ceb95b4688c71f8eb4
->>>>>>> main
   }
 
   ngOnInit() {
@@ -50,24 +35,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> main
-    this.auth.login(this.nombreUsuario, this.password).subscribe(respuesta => {    
-      console.log(respuesta)
-      console.log(respuesta.exito)
-
-      if (respuesta.exito === 1) {
+    console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.value).subscribe(response => {
+      if (response.exito === 1) {
         this.router.navigate(['/home']);
       }
-<<<<<<< HEAD
-=======
-=======
-    this.auth.login(this.nombreUsuario, this.password).subscribe(r => {
-      console.log(r);
->>>>>>> c90b3cfec7f118cef8ca70ceb95b4688c71f8eb4
->>>>>>> main
     });
   }
 }

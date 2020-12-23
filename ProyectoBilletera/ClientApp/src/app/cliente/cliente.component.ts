@@ -1,32 +1,30 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ClienteService } from '../services/cliente.service';
+import { Response } from '../models/response';
+
 
 @Component({
-  selector: 'app-cliente',
-  templateUrl: "./cliente.component.html"
+  selector: 'app-cliente-component',
+  templateUrl: './cliente.component.html'
 })
-
 export class ClienteComponent {
-  public listaClientes: Cliente[];
 
-  constructor(http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
-    http.get<Cliente[]>(baseUrl + "api/Cliente/GetList").subscribe(result => {
-      this.listaClientes = result;
-    }, error => console.error(error));
+  public lista: any[];
+  public columnas: string[] = ['idCliente', 'nombre', 'apellido', 'estado', 'idDireccion', 'nroTelefono', 'nroDni', 'frontalDni', 'traseraDni'];
+
+  constructor(
+    private clienteService: ClienteService
+  ) {
+    
   }
-}
+  ngOnInit(): void {
+    this.getClientes();
+  }
 
-interface Cliente {
-  IdCliente: number;
-  Nombre: string;
-  Apellido: string;
-  Estado: string;
-  IdDireccion: number;
-  NroTelefono: string;
-  NroDni: string;
-  Email: string;
-  NomDireccion: string;
-  NomLocalidad: string;
-  NomProvincia: string;
-  IdUsuario: string;
+  getClientes() {
+    this.clienteService.getClientes().subscribe(response => {
+      this.lista = response.data;
+      console.log(response.data);
+    });
+  }
 }

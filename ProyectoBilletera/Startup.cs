@@ -1,18 +1,19 @@
-using Clip.Models;
-using Clip.Services;
-using Clip.Tools;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
+using WepAppClip.Models;
+using Microsoft.EntityFrameworkCore;
+using WepAppClip.Services;
+using WepAppClip.Tools;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Clip
+namespace WepAppClip
 {
     public class Startup
     {
@@ -33,10 +34,11 @@ namespace Clip
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            var connection = @"Data Source=MIRKO;Initial Catalog=billetera_virtual;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            services.AddDbContext<billetera_virtualContext>(options => options.UseSqlServer(connection));
+            var conexion = @"Data Source=MIRKO;Initial Catalog=billetera_virtual;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
+            services.AddDbContext<Billetera_virtualContext>(options => options.UseSqlServer(conexion));
 
+            //config jwt
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
@@ -44,34 +46,29 @@ namespace Clip
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secreto);
 
-            services.AddAuthentication(s =>
+            services.AddAuthentication(options =>
             {
-                s.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                s.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(s =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => 
             {
-                s.RequireHttpsMetadata = false;
-                s.SaveToken = true;
-                s.TokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
-
                 };
             });
 
-
             services.AddScoped<IUsuarioService, UsuarioService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseAuthentication();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,6 +88,8 @@ namespace Clip
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

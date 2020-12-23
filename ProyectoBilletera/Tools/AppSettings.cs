@@ -1,4 +1,4 @@
-﻿namespace Clip.Tools
+﻿namespace WepAppClip.Tools
 {
     public class AppSettings
     {

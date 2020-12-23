@@ -1,4 +1,9 @@
-﻿namespace Clip.Models.ViewModels
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WepAppClip.Models.ViewModels
 {
     public class ClienteViewModel
     {
@@ -12,13 +17,11 @@
         public byte[] FrontalDni { get; set; }
         public byte[] TraseraDni { get; set; }
         public string Email { get; set; }
-        public int? IdUsuario { get; set; }
+        public string Password { get; set; }
 
         //agregamos el campo en el view model para traerlo en la consulta
         public string NomDireccion { get; set; }
         public string NomLocalidad { get; set; }
         public string NomProvincia { get; set; }
-
     }
 }
-

@@ -1,70 +1,70 @@
-﻿using Clip.Models;
-using Clip.Models.Request;
-using Clip.Models.Response;
-using Clip.Tools;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+using WepAppClip.Models;
+using WepAppClip.Models.Request;
+using WepAppClip.Models.Response;
+using WepAppClip.Tools;
 
-namespace Clip.Services
+namespace WepAppClip.Services
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly AppSettings _appSettings;
+        private readonly AppSettings _appsettings;
 
         public UsuarioService(IOptions<AppSettings> appSettings)
         {
-            _appSettings = appSettings.Value;
+            _appsettings = appSettings.Value;
         }
-
-        public LoginResponse Auth(AuthRequest userRequest)
+        public LoginResponse Auth(AuthRequest request)
         {
-            LoginResponse login = new LoginResponse();
-            using (var db = new billetera_virtualContext())
+            LoginResponse response = new LoginResponse();
+
+            using (var db = new Billetera_virtualContext()) 
             {
-                /* https://hdeleon.net/funcion-para-encriptar-en-sha256-en-c-net/ */
-                // creditos a hdeleon
+                string encryptPass = Encrypter.GetSHA256(request.Password);
 
-                string encryptPassword = Encrypter.GetSHA256(userRequest.Password);
-
-                var usuario = db.Usuarios.Where(u => u.NombreUsuario == userRequest.NombreUsuario 
-                                                && u.Password == encryptPassword).FirstOrDefault();
+                var usuario = db.Clientes.Where(d => d.Email == request.Email
+                                                && d.Password == encryptPass).FirstOrDefault();
 
                 if (usuario == null)
                 {
                     return null;
                 }
-                login.NombreUsuario = usuario.NombreUsuario;
-                login.Token = GetToken(usuario);
+
+                response.Email = usuario.Email;
+                response.Id = usuario.IdCliente;
+                response.Token = GetToken(usuario);
             }
-            return login;
+
+            return response;
         }
 
-         private string GetToken(Usuario usuario)
+        private string GetToken(Cliente usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secreto);
+            var key = Encoding.ASCII.GetBytes(_appsettings.Secreto);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(
                     new Claim[]
                     {
-                        new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                        new Claim(ClaimTypes.Name, usuario.NombreUsuario.ToString()),
-
-                    }
-                    ),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                        new Claim(ClaimTypes.NameIdentifier, usuario.IdCliente.ToString()),
+                        new Claim(ClaimTypes.Email, usuario.Email)
+                    }),
+                Expires = DateTime.UtcNow.AddMinutes(15),
+                SigningCredentials=new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
             return tokenHandler.WriteToken(token);
         }
     }

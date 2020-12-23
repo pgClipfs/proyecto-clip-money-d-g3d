@@ -1,82 +1,163 @@
-﻿using Clip.Models.Request;
-using Clip.Models.Response;
-using Clip.Services;
-using Clip.Tools;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using WepAppClip.Models;
+using WepAppClip.Models.Request;
+using WepAppClip.Models.Response;
+using WepAppClip.Models.ViewModels;
 
-namespace Clip.Controllers
+namespace WepAppClip.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [ApiController]
     public class UsuarioController : Controller
     {
-        private readonly Models.billetera_virtualContext db;
-        private readonly IUsuarioService _usuarioService;
-
-        public UsuarioController(Models.billetera_virtualContext context, IUsuarioService usuarioService)
-        {
-            db = context;
-            _usuarioService = usuarioService;
-        }
-
         [HttpGet("[action]")]
-        public IActionResult Usuarios()
+        public IActionResult Get()
         {
-            List<Models.Usuario> usuarios = db.Usuarios.ToList();
-            return Json(usuarios);
+            Response oResponse = new Response
+            {
+                Exito = 0
+            };
+            try {
+                using Billetera_virtualContext db = new Billetera_virtualContext();
+                var lista = db.Usuarios.ToList();
+                oResponse.Exito = 1;
+                oResponse.Data = lista;
+                oResponse.Mensaje = "Operacion Exitosa";
+            }
+            catch (Exception e)
+            {
+                oResponse.Mensaje = e.Message;
+            }
+            return Ok(oResponse);
         }
 
         [HttpPost("[action]")]
-        public Response Add([FromBody] Models.Usuario _user)
+        public IActionResult Add([FromBody] UsuarioViewModel oModel)
         {
-            Response oResponse = new Response();
-            Models.Usuario oUsuario = new Models.Usuario();
-
-            try {
-
-                oUsuario.NombreUsuario = _user.NombreUsuario;
-                oUsuario.Password = Encrypter.GetSHA256(_user.Password);
-                oUsuario.FechaAlta = _user.FechaAlta;
-                oUsuario.Estado = _user.Estado;
-
+            Response oResponse = new Response
+            {
+                Exito = 0
+            };
+            try
+            {
+                using Billetera_virtualContext db = new Billetera_virtualContext();
+                Usuario oUsuario = new Usuario
+                {
+                    NombreUsuario = oModel.NombreUsuario,
+                    Password = oModel.Password,
+                    FechaAlta = oModel.FechaAlta,
+                    Estado = oModel.Estado,
+                    Email = oModel.Email
+                };
                 db.Usuarios.Add(oUsuario);
                 db.SaveChanges();
-
+                
                 //codigo de exito = 1, si da error es = 0
                 oResponse.Exito = 1;
+                oResponse.Mensaje = "Registro Insertado";
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                oResponse.Exito = 0;
                 oResponse.Mensaje = e.Message;
             }
-            return oResponse;
+            return Ok(oResponse);
         }
 
-        [HttpPost("login")]
-        public IActionResult Autentificacion([FromBody] AuthRequest request)
+        [HttpPut("[action]")]
+        public IActionResult Edit([FromBody] UsuarioViewModel oModel)
         {
-            Response response = new Response();
-            var loginReponse = _usuarioService.Auth(request);
-
-            if (loginReponse == null)
+            Response oResponse = new Response
             {
-                response.Mensaje = "Usuario o Password Incorrectos";
-                response.Exito = 0;
-                return BadRequest(response);
+                Exito = 0
+            };
+            try
+            {
+                using (Billetera_virtualContext db = new Billetera_virtualContext())
+                {
+                    Usuario oUsuario = db.Usuarios.Find(oModel.IdUsuario);
+
+                    oUsuario.NombreUsuario = oModel.NombreUsuario;
+                    oUsuario.Password = oModel.Password;
+                    oUsuario.FechaAlta = oModel.FechaAlta;
+                    oUsuario.Estado = oModel.Estado;
+
+                    db.Entry(oUsuario).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    db.SaveChanges();
+
+                    //codigo de exito = 1, si da error es = 0
+                    oResponse.Exito = 1;
+                    oResponse.Mensaje = "Registro Editado con Exito";
+                };
             }
-
-            response.Mensaje = "Login con Exito";
-            response.Exito = 1;
-            response.Data = loginReponse;
-
-            return Ok(response);
+            catch (Exception e)
+            {
+                oResponse.Mensaje = e.Message;
+            }
+            return Ok(oResponse);
         }
 
-        
+        [HttpDelete("{_id}")]
+        public IActionResult Delete(int _id)
+        {
+            Response oResponse = new Response
+            {
+                Exito = 0
+            };
+            try
+            {
+                using (Billetera_virtualContext db = new Billetera_virtualContext())
+                {
+                    Usuario oUsuario = db.Usuarios.Find(_id);
+
+                    db.Remove(oUsuario);
+
+                    db.SaveChanges();
+
+                    //codigo de exito = 1, si da error es = 0
+                    oResponse.Exito = 1;
+                    oResponse.Mensaje = "Registro Eliminado con Exito";
+                };
+            }
+            catch (Exception e)
+            {
+                oResponse.Mensaje = e.Message;
+            }
+            return Ok(oResponse);
+        }
+
+        [HttpGet("ById/{_id}")]
+        public IActionResult GetById(int _id)
+        {
+            Response oResponse = new Response
+            {
+                Exito = 0
+            };
+            try
+            {
+                using Billetera_virtualContext db = new Billetera_virtualContext();
+                Usuario oUsuario = db.Usuarios.Find(_id);
+                oResponse.Data = oUsuario;
+                oResponse.Exito = 1;
+                oResponse.Mensaje = "Usuario encontrado";
+
+            }
+            catch (Exception e)
+            {
+                oResponse.Mensaje = e.Message;
+            }
+            return Ok(oResponse);
+        }
+        [HttpPost("login")]
+        public IActionResult Autentificacion([FromBody] AuthRequest model)
+        {
+            Response oResponse = new Response
+            {
+                Exito = 0
+            };
+            return Ok(model);
+        }
     }
+    
 }

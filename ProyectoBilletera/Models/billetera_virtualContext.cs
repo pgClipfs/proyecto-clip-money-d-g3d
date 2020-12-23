@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Clip.Models
+namespace WepAppClip.Models
 {
-    public partial class billetera_virtualContext : DbContext
+    public partial class Billetera_virtualContext : DbContext
     {
-        public billetera_virtualContext()
+        public Billetera_virtualContext()
         {
         }
 
-        public billetera_virtualContext(DbContextOptions<billetera_virtualContext> options)
+        public Billetera_virtualContext(DbContextOptions<Billetera_virtualContext> options)
             : base(options)
         {
         }
@@ -60,7 +60,8 @@ namespace Clip.Models
                     .HasColumnName("apellido");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(25)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
                     .HasColumnName("email");
 
                 entity.Property(e => e.Estado).HasColumnName("estado");
@@ -70,8 +71,6 @@ namespace Clip.Models
                     .HasColumnName("frontalDNI");
 
                 entity.Property(e => e.IdDireccion).HasColumnName("idDireccion");
-
-                entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(50)
@@ -86,6 +85,11 @@ namespace Clip.Models
                     .HasMaxLength(50)
                     .HasColumnName("nroTelefono");
 
+                entity.Property(e => e.Password)
+                    .HasMaxLength(256)
+                    .IsUnicode(false)
+                    .HasColumnName("password");
+
                 entity.Property(e => e.TraseraDni)
                     .HasColumnType("image")
                     .HasColumnName("traseraDNI");
@@ -94,11 +98,6 @@ namespace Clip.Models
                     .WithMany(p => p.Clientes)
                     .HasForeignKey(d => d.IdDireccion)
                     .HasConstraintName("FK_Cliente_Direccion");
-
-                entity.HasOne(d => d.IdUsuarioNavigation)
-                    .WithMany(p => p.Clientes)
-                    .HasForeignKey(d => d.IdUsuario)
-                    .HasConstraintName("FK_Cliente_Usuario");
             });
 
             modelBuilder.Entity<Cuentum>(entity =>
@@ -581,6 +580,12 @@ namespace Clip.Models
                 entity.ToTable("Usuario");
 
                 entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("email");
 
                 entity.Property(e => e.Estado).HasColumnName("estado");
 

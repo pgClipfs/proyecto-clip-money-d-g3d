@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
-namespace Clip.Models
+namespace WepAppClip.Models
 {
     public partial class Cliente
     {
@@ -22,10 +23,10 @@ namespace Clip.Models
         public byte[] FrontalDni { get; set; }
         public byte[] TraseraDni { get; set; }
         public string Email { get; set; }
-        public int? IdUsuario { get; set; }
+        [JsonIgnore]
+        public string Password { get; set; }
 
         public virtual Direccion IdDireccionNavigation { get; set; }
-        public virtual Usuario IdUsuarioNavigation { get; set; }
         public virtual ICollection<Cuentum> Cuenta { get; set; }
     }
 }

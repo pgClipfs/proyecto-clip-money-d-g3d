@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Clip.Models
+namespace WepAppClip.Models
 {
     public partial class Localidad
     {
